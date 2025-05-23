@@ -1,0 +1,5 @@
+RENT AGREEMENT
+
+Start Date: {{start_date}}
+Landlord: {{landlord}}
+Tenant: {{tenant}}

@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% block title %}Create New Template{% endblock %}
+
+{% block extra_css %}
+<style>
+  .form-card {
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .form-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+  }
+  .form-header {
+    background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+    color: #fff;
+    font-weight: 600;
+  }
+  .form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(23,162,184,0.25);
+  }
+  .btn-submit {
+    border-radius: 50px;
+    padding: 0.75rem;
+    font-weight: 500;
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="row justify-content-center " style="min-height:70vh;">
+  <div class="col-md-12 px-5">
+    <div class="card shadow-sm mb-4 form-card">
+      <div class="card-header form-header text-center py-3">
+        <h5>Create New Template</h5>
+      </div>
+      <div class="card-body p-4">
+        <form method="post" enctype="multipart/form-data" novalidate>
+          {{ form.hidden_tag() }}
+
+          {# show any syntax‐error guidelines at the top #}
+          {% if guidelines %}
+            <div class="alert alert-danger mb-4">
+              {{ guidelines|safe }}
+            </div>
+          {% endif %}
+
+          <!-- Name -->
+          <div class="mb-3">
+            {{ form.name.label(class="form-label") }}
+            {{ form.name(class="form-control") }}
+            {% for e in form.name.errors %}
+              <div class="invalid-feedback d-block">{{ e }}</div>
+            {% endfor %}
+          </div>
+
+          <!-- Slug -->
+          <div class="mb-3">
+            {{ form.slug.label(class="form-label") }}
+            {{ form.slug(class="form-control") }}
+            {% for e in form.slug.errors %}
+              <div class="invalid-feedback d-block">{{ e }}</div>
+            {% endfor %}
+          </div>
+
+          <!-- Category -->
+          <div class="mb-3">
+            <label for="categoryInput" class="form-label">{{ form.category.label.text }}</label>
+            <input list="categoryList"
+                   id="categoryInput"
+                   name="{{ form.category.name }}"
+                   value="{{ form.category.data }}"
+                   class="form-control"
+                   placeholder="Select or type category">
+            <datalist id="categoryList">
+              {% for cat in categories %}
+                <option value="{{ cat }}"></option>
+              {% endfor %}
+            </datalist>
+            {% for e in form.category.errors %}
+              <div class="invalid-feedback d-block">{{ e }}</div>
+            {% endfor %}
+          </div>
+
+          <!-- DOCX Upload -->
+          <div class="mb-3">
+            {{ form.docx_file.label(class="form-label") }}
+            {{ form.docx_file(class="form-control") }}
+            {% for e in form.docx_file.errors %}
+              <div class="invalid-feedback d-block">{{ e }}</div>
+            {% endfor %}
+          </div>
+
+          <!-- Submit -->
+          <div class="d-grid gap-2">
+            {{ form.submit(class="btn btn-primary btn-lg btn-submit") }}
+            <a href="{{ url_for('admin.list_templates') }}" class="btn btn-link">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

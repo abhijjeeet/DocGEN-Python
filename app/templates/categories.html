@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Choose Category{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+  <h2 class="mb-4 text-center">Select a Category</h2>
+  <div class="row g-4">
+    {% for cat in categories %}
+      <div class="col-6 col-md-4 col-lg-3">
+        <a href="{{ url_for('main.view_templates', category=cat) }}"
+           class="text-decoration-none">
+          <div class="card shadow-sm h-100">
+            <div class="card-body d-flex align-items-center justify-content-center">
+              <h5 class="card-title mb-0">{{ cat }}</h5>
+            </div>
+          </div>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

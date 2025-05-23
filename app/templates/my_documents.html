@@ -1,0 +1,60 @@
+<!-- templates/my_documents.html -->
+{% extends 'base.html' %}
+{% block title %}My Documents{% endblock %}
+
+{% block body %}
+<div class="container-fluid px-3">
+  <h2 class="my-3 mb-5">My Generated Documents</h2>
+  {% if docs %}
+  <table class="table table-bordered align-middle">
+    <thead class="table-light">
+      <tr>
+        <th>Template</th>
+        <th>When</th>
+        <th>DOCX</th>
+        <th>PDF</th>
+        <th>TXT</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for base, versions in docs.items() %}
+      {% set parts = base.split('_') %}
+      {% set slug = parts[1] %}
+      {% set ts = parts[2]|int %}
+      <tr>
+        <td class="text-capitalize">{{ slug.replace('-', ' ') }}</td>
+        <td>{{ ts|datetimeformat("%d %b %Y %H:%M") }}</td>
+        {% for ext in ['docx','pdf','txt'] %}
+        <td>
+          {% if versions[ext] %}
+          <a href="{{ url_for('static', filename='generated/' ~ versions[ext]) }}"
+             class="btn btn-sm btn-outline-primary">Download</a>
+          {% else %}
+          &mdash;
+          {% endif %}
+        </td>
+        {% endfor %}
+        <td>
+          <form method="post"
+                action="{{ url_for('main.delete_document') }}"
+                onsubmit="return confirm('Delete all versions of this document?');">
+            <input type="hidden" name="base" value="{{ base }}">
+            <!-- render the CSRF token in a hidden field: -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-sm btn-danger">
+              Delete
+            </button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="alert alert-info mt-4">
+    You have not generated any documents yet.
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,4 @@
+NON-DISCLOSURE AGREEMENT
+
+Date: {{effective_date}}
+Party: {{party_name}}

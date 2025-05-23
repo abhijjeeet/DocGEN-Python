@@ -1,0 +1,10 @@
+{% extends 'base.html' %}{% block body %}
+<h2>Rent Agreement Form</h2>
+<form method="post">
+  {{ form.hidden_tag() }}
+  <div class="mb-3">{{ form.landlord.label }} {{ form.landlord(class="form-control") }}</div>
+  <div class="mb-3">{{ form.tenant.label }} {{ form.tenant(class="form-control") }}</div>
+  <div class="mb-3">{{ form.start_date.label }} {{ form.start_date(class="form-control") }}</div>
+  {{ form.submit(class="btn btn-success") }}
+</form>
+{% endblock %}

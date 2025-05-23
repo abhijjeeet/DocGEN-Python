@@ -1,0 +1,77 @@
+<!-- templates/login.html -->
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block extra_css %}
+<style>
+  .login-card {
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .login-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+  }
+  .login-header {
+    background: linear-gradient(135deg, #556ee6 0%, #34c38f 100%);
+  }
+  .login-header h5 {
+    font-weight: 600;
+  }
+  .form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(85,110,230,0.25);
+  }
+  .btn-login {
+    border-radius: 50px;
+    padding: 0.75rem;
+    font-weight: 500;
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="row justify-content-center align-items-center" style="min-height: 70vh;">
+  <div class="col-md-6 col-lg-4">
+    <div class="card login-card shadow-sm">
+      <div class="card-header login-header text-white text-center py-3">
+        <h5 class="mb-0 text-dark">🔒 Login to DocGen</h5>
+      </div>
+      <div class="card-body p-4">
+        <form method="post" novalidate>
+          {{ form.hidden_tag() }}
+          <div class="mb-3">
+            {{ form.username.label(class="form-label") }}
+            <div class="input-group">
+              <span class="input-group-text bg-light"><i class="bi bi-person-fill"></i></span>
+              {{ form.username(class="form-control", placeholder="Enter username") }}
+            </div>
+            {% for error in form.username.errors %}
+              <div class="invalid-feedback d-block">{{ error }}</div>
+            {% endfor %}
+          </div>
+          <div class="mb-3">
+            {{ form.password.label(class="form-label") }}
+            <div class="input-group">
+              <span class="input-group-text bg-light"><i class="bi bi-lock-fill"></i></span>
+              {{ form.password(class="form-control", placeholder="Enter password") }}
+            </div>
+            {% for error in form.password.errors %}
+              <div class="invalid-feedback d-block">{{ error }}</div>
+            {% endfor %}
+          </div>
+          <div class="d-grid mb-2">
+            {{ form.submit(class="btn btn-primary btn-login") }}
+          </div>
+          
+        </form>
+      </div>
+      <div class="card-footer text-center">
+        <small class="text-muted">Don't have an account? <a href="{{ url_for('auth.register') }}" class="text-decoration-none">Register</a></small>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

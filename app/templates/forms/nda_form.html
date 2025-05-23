@@ -1,0 +1,9 @@
+{% extends 'base.html' %}{% block body %}
+<h2>NDA Form</h2>
+<form method="post">
+  {{ form.hidden_tag() }}
+  <div class="mb-3">{{ form.party_name.label }} {{ form.party_name(class="form-control") }}</div>
+  <div class="mb-3">{{ form.effective_date.label }} {{ form.effective_date(class="form-control") }}</div>
+  {{ form.submit(class="btn btn-success") }}
+</form>
+{% endblock %}

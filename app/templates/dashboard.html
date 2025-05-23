@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block title %}Select Template{% endblock %}
+
+{% block extra_css %}
+
+{% endblock %}
+
+{% block body %}
+<div class="container">
+  <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+    <div class="text-start">
+      <h2 class="fw-bold mb-3">
+        {% if category %}
+        {{ category }} Templates
+        {% else %}
+        Document Categories
+        {% endif %}
+      </h2>
+      <h6 class="op-7 mb-2">
+        {% if category %}
+        Fill in a "{{ category }}" template below.
+        {% else %}
+        Select a category to begin.
+        {% endif %}
+      </h6>
+    </div>
+    <div class="mb-4 ms-auto">
+      <a href="{{ url_for('main.dashboard') }}" class="btn btn-outline-secondary">
+        ← Back to categories
+      </a>
+    </div>
+  </div>
+
+  {% if not category %}
+  <!-- Search Bar -->
+
+
+
+  <div class="card p-2 mb-2">
+    <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <button type="submit" class="btn btn-search pe-1">
+            <i class="fa fa-search search-icon"></i>
+          </button>
+        </div>
+        <input id="category-search" type="text" class="form-control" placeholder="Search categories..."
+          spellcheck="false">
+      </div>
+    </nav>
+  </div>
+
+
+  <!-- Category Grid -->
+  <div class="row g-4 mt-3" id="category-grid">
+    {% for cat in categories %}
+    <div class="col-sm-6 col-md-3 category-card" data-category="{{ cat|lower }}">
+      <div class="card card-stats card-round" onclick="location.search='?category={{ cat|urlencode }}'">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col-icon">
+              <div class="icon-big text-center icon-secondary bubble-shadow-small">
+                <i class="far fa-check-circle"></i>
+              </div>
+            </div>
+            <div class="col col-stats ms-3 ms-sm-0">
+              <div class="numbers">
+                <p class="fw-bold">{{ cat }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% else %}
+  <!-- Back button -->
+
+
+  <!-- Templates Grid -->
+  <div class="row g-4 mb-5">
+    {% for t in templates %}
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+      <div class="card h-100 border-0 shadow-sm rounded-3 template-card">
+        <div class="card-body d-flex flex-column p-4">
+          <!-- Title with Icon -->
+          <h5 class="card-title text-center mb-3">
+            <i class="bi bi-file-earmark-text me-2 text-primary"></i>
+            {{ t.name }}
+          </h5>
+
+          <!-- Optional Description -->
+          {% if t.description %}
+          <p class="card-text text-muted mb-2 flex-grow-1 text-center">
+            {{ t.description }}
+          </p>
+          {% else %}
+          <div class="flex-grow-1"></div>
+          {% endif %}
+
+          <!-- Generate Button -->
+          <a href="{{ url_for('main.generate', slug=t.slug) }}" class="btn btn-primary w-100 mt-auto">
+            <i class="bi bi-gear-fill me-1"></i> Generate
+          </a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+    {% if templates|length == 0 %}
+    <div class="col-12 text-center text-muted">
+      No templates in this category.
+    </div>
+    {% endif %}
+  </div>
+
+  {% endif %}
+</div>
+
+<!-- Real-time filtering script -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const input = document.getElementById('category-search');
+    const clear = document.getElementById('search-clear');
+    const cards = document.querySelectorAll('.category-card');
+
+    function filterCards() {
+      const term = input.value.trim().toLowerCase();
+      cards.forEach(card => {
+        const cat = card.getAttribute('data-category');
+        card.style.display = cat.includes(term) ? '' : 'none';
+      });
+    }
+
+    input.addEventListener('input', filterCards);
+    clear.addEventListener('click', e => {
+      e.preventDefault();
+      input.value = '';
+      filterCards();
+      input.focus();
+    });
+  });
+</script>
+{% endblock %}

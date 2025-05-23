@@ -1,0 +1,77 @@
+<!-- templates/form_page.html -->
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block extra_css %}
+<style>
+  .form-card {
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .form-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .form-header {
+    background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(23, 162, 184, 0.25);
+  }
+
+  .btn-submit {
+    border-radius: 50px;
+    padding: 0.75rem;
+    font-weight: 500;
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="row justify-content-center align-items-center" style="min-height: 70vh;">
+  <div class="col-md-12">
+    <div class="card form-card shadow-sm mb-4">
+      <div class="card-header form-header text-center py-3">
+        <h5 class="mb-0">{{ title }}</h5>
+      </div>
+      <div class="card-body p-4 container">
+        <form method="post" novalidate>
+          {{ form.hidden_tag() }}
+
+          <div class="row row-cols-1 row-cols-md-2 row-cols-lg-2 g-3 mb-3">
+            {# Loop in the order of tmpl.fields #}
+            {% for fld in tmpl.fields %}
+              {% set field = form[fld.name] %}
+              <div class="col">
+                {{ field.label(class="form-label") }}
+                {{ field(class="form-control", placeholder=fld.label) }}
+                {% if field.errors %}
+                  <div class="invalid-feedback d-block">
+                    {% for err in field.errors %}
+                      {{ err }}<br>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+
+          <div class="row">
+            <div class="col text-center">
+              {{ form.submit(class="btn btn-info btn-submit btn-lg") }}
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

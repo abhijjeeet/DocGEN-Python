@@ -1,0 +1,67 @@
+<!-- templates/download_document.html -->
+{% extends 'base.html' %}
+
+{% block title %}Download Document{% endblock %}
+
+{% block extra_css %}
+<style>
+  .download-card {
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .download-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+  }
+  .download-card .card-header {
+    background: #28a745;
+    color: #fff;
+    font-weight: 600;
+  }
+  .download-btn {
+    border-radius: 50px;
+    padding: 0.75rem;
+    font-weight: 500;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .download-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card download-card mb-4">
+      <div class="card-header text-center">
+        <h5 class="mb-0">🎉 Document Ready</h5>
+      </div>
+      <div class="card-body text-center">
+        <p class="mb-4 text-secondary">
+          Your document has been generated successfully. Choose a format to download:
+        </p>
+        <div class="d-grid gap-3">
+          <a href="{{ docx }}" class="btn btn-outline-primary btn-lg download-btn">
+            <i class="bi bi-file-earmark-word-fill me-2"></i>Download DOCX
+          </a>
+          <a href="{{ pdf }}" class="btn btn-outline-primary btn-lg download-btn">
+            <i class="bi bi-file-earmark-pdf-fill me-2"></i>Download PDF
+          </a>
+          <a href="{{ txt }}" class="btn btn-outline-primary btn-lg download-btn" download>
+            <i class="bi bi-file-earmark-text-fill me-2"></i>Download TXT
+          </a>
+        </div>
+      </div>
+      <div class="card-footer text-end">
+        <a href="{{ url_for('main.dashboard') }}" class="text-decoration-none">
+          ← Back to Dashboard
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

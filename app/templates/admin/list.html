@@ -1,0 +1,98 @@
+<!-- templates/admin_templates.html -->
+{% extends 'base.html' %}
+
+{% block title %}Admin • Templates{% endblock %}
+
+{% block extra_css %}
+<style>
+  .table-card {
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .table-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .table-header {
+    background: linear-gradient(135deg, #556ee6 0%, #34c38f 100%);
+    color: #fff;
+    padding: 1rem 1.5rem;
+  }
+
+  .btn-new {
+    border-radius: 50px;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+  }
+
+  .table-hover tbody tr:hover {
+    background-color: rgba(85, 110, 230, 0.05);
+  }
+
+  .action-btn {
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="mb-4 d-flex justify-content-between align-items-center mx-3">
+  <h2 class="mb-0">All Templates</h2>
+  <a href="{{ url_for('admin.new_template') }}" class="btn btn-primary btn-new">
+    <i class="bi bi-file-plus me-1"></i> New Template
+  </a>
+</div>
+
+<div class="card table-card mx-3">
+  <div class="table-header">
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Category</th>
+          <th>Name</th>
+          <th>Slug</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for tmpl in templates %}
+        <tr>
+          <td>{{ tmpl.category }}</td>
+          <td>{{ tmpl.name }}</td>
+          <td><code>{{ tmpl.slug }}</code></td>
+          <td class="text-end">
+            <form action="{{ url_for('admin.delete_template', template_id=tmpl.id) }}" method="post" class="d-inline"
+              onsubmit="return confirm('Delete template “{{ tmpl.name }}”?');">
+              <!-- CSRF token is required by Flask-WTF -->
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button type="submit" class="btn btn-sm btn-danger action-btn">
+                <i class="bi bi-trash-fill"></i>
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="3" class="text-center text-muted py-4">
+            No templates available.&nbsp;
+            <a href="{{ url_for('admin.new_template') }}">Add one now.</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
