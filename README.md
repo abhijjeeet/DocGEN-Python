@@ -54,7 +54,7 @@ A Python-based automated legal document generator that leverages templating to p
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/legal-doc-generator.git
+git clone https://github.com/abhijjeeet/DocGEN-Python.git
 cd legal-doc-generator
 ```
 
